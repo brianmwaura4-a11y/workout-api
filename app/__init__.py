@@ -17,11 +17,12 @@ def create_app():
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
 
-    # Flask-SQLAlchemy stores this SQLite database in Flask's instance folder.
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 
     db.init_app(app)
     migrate.init_app(app, db)
+
+    from app import models
 
     @app.get("/")
     def index():
