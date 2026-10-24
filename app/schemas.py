@@ -75,3 +75,24 @@ class WorkoutExerciseInputSchema(Schema):
             raise ValidationError(
                 {"_schema": ["Provide sets, reps, or duration_seconds."]}
             )
+
+
+class ExerciseOutputSchema(Schema):
+    id = fields.Integer(dump_only=True)
+    name = fields.String()
+    description = fields.String(allow_none=True)
+
+
+class WorkoutExerciseOutputSchema(Schema):
+    exercise = fields.Nested(ExerciseOutputSchema)
+    sets = fields.Integer(allow_none=True)
+    reps = fields.Integer(allow_none=True)
+    duration_seconds = fields.Integer(allow_none=True)
+
+
+class WorkoutOutputSchema(Schema):
+    id = fields.Integer(dump_only=True)
+    name = fields.String()
+    date = fields.Date(format="%Y-%m-%d")
+    notes = fields.String(allow_none=True)
+    exercises = fields.Nested(WorkoutExerciseOutputSchema, many=True)
