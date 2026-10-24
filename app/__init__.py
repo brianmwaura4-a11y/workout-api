@@ -10,13 +10,15 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
     app.config.from_mapping(
         SQLALCHEMY_DATABASE_URI="sqlite:///workout.db",
         SQLALCHEMY_TRACK_MODIFICATIONS=False,
     )
+    if test_config is not None:
+        app.config.update(test_config)
 
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 
