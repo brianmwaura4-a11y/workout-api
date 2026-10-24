@@ -3,6 +3,7 @@ from pathlib import Path
 from flask import Flask, jsonify
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import ValidationError
 
 
 db = SQLAlchemy()
@@ -22,7 +23,14 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app import models
+    from app import models  # noqa: F401
+    from app.routes import api
+
+    app.register_blueprint(api)
+
+    @app.errorhandler(ValidationError)
+    def handle_validation_error(error):
+        return jsonify({"errors": error.messages}), 400
 
     @app.get("/")
     def index():
