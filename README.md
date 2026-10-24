@@ -98,3 +98,19 @@ curl -i -X POST http://127.0.0.1:5000/workouts/1/exercises \
 - `seed.py` — Example data for all models
 - `run.py` — Flask application entry point
 - `Pipfile` and `Pipfile.lock` — Dependency declarations and locked versions
+
+## Running tests
+
+Install the project dependencies, including development dependencies:
+
+```bash
+pipenv install --dev
+```
+
+Run the automated tests:
+
+```bash
+pipenv run python -m pytest -q
+```
+
+The tests use a temporary in-memory database, so they do not change your workout data.
