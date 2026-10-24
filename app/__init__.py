@@ -1,8 +1,28 @@
+from pathlib import Path
+
 from flask import Flask, jsonify
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app():
     app = Flask(__name__)
+
+    app.config.from_mapping(
+        SQLALCHEMY_DATABASE_URI="sqlite:///workout.db",
+        SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    )
+
+    Path(app.instance_path).mkdir(parents=True, exist_ok=True)
+
+    db.init_app(app)
+    migrate.init_app(app, db)
+
+    from app import models
 
     @app.get("/")
     def index():
